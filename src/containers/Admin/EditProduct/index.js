@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select"
-import { Container, Button, Label, Input, LabelUpload } from "./styles";
+import { Container, Button, Label, Input, LabelUpload , ContainerInput } from "./styles";
 import api from "../../../services/api"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import * as Yup from "yup"
@@ -10,16 +10,21 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { ErrorMessage } from "../../../components/ErrorMessage"
 import {toast} from "react-toastify"
 
+
 function EditProduct() {
+
+  
 
   const [fileName, setFileName] = useState(null)
 
   const [categories, setCategories] = useState([])
 
-    const {push,location} = useHistory()
+    const {push, location : {
+      state :{product}
+    }} = useHistory()
 
-
-    console.log(location)
+      
+    
 
 
   const schema = Yup.object().shape({
@@ -27,19 +32,14 @@ function EditProduct() {
     name: Yup.string().required("Digite o nome do produto."),
     price: Yup.string().required("Digite o preço do produto."),
     category: Yup.object().required("Escolha a categoria do produto."),
-    file: Yup.mixed().test("required", "Carregue uma imagem.", value => {
-      return value?.length > 0
+    offer:Yup.bool()
+    
     })
-    .test("type", "Carregue apenas arquivos PNG ou JPEG.", value => {
-      return (
-        (value[0]?.type === "image/jpeg") ||
-        (value[0]?.type === "image/png")
-      )
-    })
+    
 
 
 
-  })
+  
 
 
 
@@ -58,13 +58,14 @@ function EditProduct() {
       productDataFormData.append("price", data.price)
       productDataFormData.append("category_id", data.category.id)
       productDataFormData.append("file", data.file[0])
+      productDataFormData.append("offer", data.offer)
 
 
 
-      await toast.promise ( api.post("products", productDataFormData) , {
-        pending:"Adicionando novo produto! ",
-        success:"Produto adicionado com sucesso!",
-        error:"Falha ao adicionar o produto."
+      await toast.promise ( api.put(`products/${product.id}`, productDataFormData) , {
+        pending:"Editando novo produto! ",
+        success:"Produto editado com sucesso!",
+        error:"Falha ao editar o produto."
       })
 
         setTimeout(() => {
@@ -95,13 +96,13 @@ function EditProduct() {
       <form noValidate onSubmit={handleSubmit(onSubmit)}  >
         <div>
         <Label>Nome</Label>
-        <Input type="text"  {...register("name")} />
+        <Input type="text"  {...register("name")}  defaultValue={product.name}/>
         <ErrorMessage>{errors.name?.message}</ErrorMessage>
         </div>
 
           <div>
         <Label>Preço</Label>
-        <Input type="number"  {...register("price")} />
+        <Input type="number"  {...register("price")}  defaultValue={product.price} />
         <ErrorMessage>{errors.price?.message}</ErrorMessage>
         </div>
 
@@ -130,6 +131,7 @@ function EditProduct() {
         <Controller
           name="category"
           control={control}
+          defaultValue={product.category}
           render={({ field }) => {
             return (
 
@@ -140,6 +142,7 @@ function EditProduct() {
                 getOptionLabel={cat => cat.name}
                 getOptionValue={cat => cat.id}
                 placeholder="Categorias."
+                defaultValue={product.category}
 
 
 
@@ -152,7 +155,12 @@ function EditProduct() {
         </Controller>
         <ErrorMessage>{errors.category?.message}</ErrorMessage>
         </div>
-        <Button>Adicionar Produto</Button>
+            <ContainerInput>
+            <input  type="checkbox"  {...register("offer")}  defaultChecked={product.offer} />
+            <Label>Produto em oferta?</Label>
+            </ContainerInput>
+       
+        <Button>Editar Produto</Button>
       </form>
     </Container>
   );

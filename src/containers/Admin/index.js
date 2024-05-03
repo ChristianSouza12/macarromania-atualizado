@@ -18,6 +18,7 @@ export function Admin({match : { path } }){
        {path === paths.Products && <ListProducts/>}
        {path === paths.NewProduct && <NewProduct/>}
        {path === paths.EditProduct && <EditProduct/>}
+       
       
        </ContainerItems>
     

@@ -47,4 +47,9 @@ padding-left: 20px;
     color:white;
 }
 
+
+&.active{
+    background:#565656;
+}
+
 `;

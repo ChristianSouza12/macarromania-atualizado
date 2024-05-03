@@ -40,12 +40,18 @@ function ListProducts() {
         }
 
 
-          function editProduct(product){
-            push(paths.EditProduct,{product})
+          // function editProduct(product){
+          //  push(paths.EditProduct, {product})
 
+          // }
+
+          function editProduct(product) {
+            const editedProduct = { ...product }; 
+            
+            
+            push(paths.EditProduct, { product: editedProduct }); 
           }
-
-     
+          
 
     return (
         <Container>
@@ -61,7 +67,7 @@ function ListProducts() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products  && products.map((product) => (
+          {products  && products.map( product => (
             <TableRow
               key={product.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -75,13 +81,13 @@ function ListProducts() {
                  <Image src={product.url} alt="Imagem-produto" />
                  </TableCell>
               <TableCell>
-                <EditIconStyled   onClick={() => editProduct(product) }  />
+                <EditIconStyled   onClick={() => editProduct (product)}  />
                 </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+     </TableContainer>
         </Container>
     );
 }
