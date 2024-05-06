@@ -8,7 +8,7 @@ import {yupResolver} from "@hookform/resolvers/yup"
 import { toast } from "react-toastify";
 import api from "../../services/api"
 import { Link } from "react-router-dom";
-import  {ErrorMessage}  from "../../components";
+import { ErrorMessage } from "../../components";
 
 
 

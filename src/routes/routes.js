@@ -1,7 +1,8 @@
 import React from "react";
 import { Switch,Route,BrowserRouter as Router, } from "react-router-dom";
 
-import {Home,Products,Register,Login,Cart,Admin } from "../containers";
+import {Home,Products,Login,Cart,Admin,Register } from "../containers";
+
 import PrivateRoute from "./private-route";
 import paths from "../constants/paths";
 

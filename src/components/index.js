@@ -5,4 +5,4 @@ export * from "./CartItems"
 export * from "./CartResume"
 export * from "./Header"
 export * from "./SideMenuAdmin"
-export * as ErrorMessage from "./ErrorMessage";
+export * from  "./ErrorMessage" 
